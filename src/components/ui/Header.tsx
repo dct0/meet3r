@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useContext, useEffect } from "react";
 import { BsPalette2 } from "react-icons/bs";
 import { useLocalStorage } from "usehooks-ts";
@@ -67,7 +68,7 @@ const Header = () => {
                 {themes.map((item, i) => (
                   <li key={i}>
                     <a
-                      className={`capitalize ${theme === item ? "active" : ""}`}
+                      className={clsx("capitalize", { active: item === theme })}
                       onClick={() => setTheme(item)}
                     >
                       {item}

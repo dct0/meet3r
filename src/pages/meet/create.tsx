@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Button from "~/components/ui/Button";
 import DatePicker from "~/components/ui/DatePicker";
-import TextField from "~/components/ui/form/TextField";
+import TextField from "~/components/ui/Form/TextField";
 import { HeaderContext } from "~/contexts/HeaderContext";
 import { formSchema, type FormValues } from "~/schema/forms/createMeet";
 import type { PageProps } from "~/types";
@@ -48,7 +48,7 @@ export const Page = ({ title }: PageProps) => {
           label="Description"
           placeholder="Enter description"
         />
-        <DatePicker name="dates" />
+        <DatePicker />
         <Button className="btn-primary mt-2" type="submit">
           Submit
         </Button>
@@ -57,10 +57,12 @@ export const Page = ({ title }: PageProps) => {
   );
 };
 
-Page.getInitialProps = () => {
+export function getStaticProps() {
   return {
-    title: "Create meet",
+    props: {
+      title: "Create meet",
+    },
   };
-};
+}
 
 export default Page;

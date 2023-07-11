@@ -1,10 +1,15 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import Header from "~/components/ui/Header";
 import { HeaderProvider } from "~/contexts/HeaderContext";
 import "~/styles/globals.css";
 import { api } from "~/utils/api";
+
+import dynamic from "next/dynamic";
+
+const HeaderWithNoSSR = dynamic(() => import("../components/ui/Header"), {
+  ssr: false,
+});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,7 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <HeaderProvider>
-        <Header />
+        <HeaderWithNoSSR />
         <Component {...pageProps} />
       </HeaderProvider>
     </SessionProvider>
