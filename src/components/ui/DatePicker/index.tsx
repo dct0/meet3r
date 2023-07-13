@@ -1,10 +1,27 @@
 import { useDatePicker } from "@rehookify/datepicker";
-import { useState, type MouseEvent } from "react";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import type {
+  FieldValues,
+  Path,
+  PathValue,
+  UseControllerProps,
+} from "react-hook-form";
+import { useController } from "react-hook-form";
+import { getDayClassName } from "./classNames";
 import DayButton from "./components/DayButton";
 import MonthSwitcher from "./components/MonthSwitcher";
-import { getDayClassName } from "./classNames";
 
-const DatePicker = () => {
+interface DatePickerProps<T extends FieldValues> extends UseControllerProps<T> {
+  className?: string;
+}
+
+const DatePicker = <T extends FieldValues>({
+  className,
+  ...props
+}: DatePickerProps<T>) => {
+  const { field } = useController(props);
+
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
   const {
     data: { weekDays, calendars },
@@ -29,16 +46,14 @@ const DatePicker = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const calendar = calendars[0]!;
 
-  const onDayClick = (evt: MouseEvent<HTMLElement>, date: Date) => {
-    // In case you need any action with evt
-    evt.stopPropagation();
-
-    // In case you need any additional action with date
-    console.log(date);
-  };
+  useEffect(() => {
+    // field must be a Date[]
+    field.onChange(selectedDates as PathValue<T, Path<T>>);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDates]);
 
   return (
-    <section className="bg-base w-fit rounded p-4">
+    <section className={clsx("bg-base w-fit rounded p-4", className)}>
       <MonthSwitcher
         previousMonthProps={previousMonthButton()}
         nextMonthProps={nextMonthButton()}
@@ -56,7 +71,7 @@ const DatePicker = () => {
           <DayButton
             className={getDayClassName("w-8", dpDay)}
             key={dpDay.$date.toDateString()}
-            {...dayButton(dpDay, { onClick: onDayClick })}
+            {...dayButton(dpDay)}
           >
             {dpDay.day}
           </DayButton>

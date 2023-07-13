@@ -48,7 +48,7 @@ export const Page = ({ title }: PageProps) => {
           label="Description"
           placeholder="Enter description"
         />
-        <DatePicker />
+        <DatePicker name="dates" control={control} />
         <Button className="btn-primary mt-2" type="submit">
           Submit
         </Button>

@@ -7,7 +7,6 @@ export const formSchema = z.object({
     .max(50, "Name must not exceed 50 characters"),
   description: z
     .string()
-    .min(1)
     .max(500, "Description must not exceed 500 characters")
     .optional(),
   dates: z.date().array(),

@@ -4,15 +4,14 @@ import {
   type UseControllerProps,
 } from "react-hook-form";
 
-interface TextInputProps<T extends FieldValues = FieldValues>
-  extends UseControllerProps<T> {
+interface TextInputProps<T extends FieldValues> extends UseControllerProps<T> {
   type: "text" | "email" | "tel" | "password" | "url" | "date";
   label?: string;
   placeholder?: string;
   required?: boolean;
 }
 
-const TextInput = <T extends FieldValues = FieldValues>({
+const TextInput = <T extends FieldValues>({
   label,
   placeholder,
   ...props
