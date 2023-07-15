@@ -25,7 +25,7 @@ const config = {
       "warn",
       {
         prefer: "type-imports",
-        fixStyle: "inline-type-imports",
+        fixStyle: "separate-type-imports",
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
@@ -37,6 +37,7 @@ const config = {
         },
       },
     ],
+    "import/consistent-type-specifier-style": ["warn", "prefer-top-level"],
   },
 };
 

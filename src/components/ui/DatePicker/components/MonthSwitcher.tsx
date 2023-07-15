@@ -1,6 +1,6 @@
 import type { DPCalendar, DPPropGetter } from "@rehookify/datepicker";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import MonthSwitchButton from "./MothSwitchButton";
+import MonthSwitchButton from "./MonthSwitchButton";
 
 interface MonthSwitcherProps {
   previousMonthProps: DPPropGetter;

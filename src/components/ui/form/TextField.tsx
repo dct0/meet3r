@@ -1,8 +1,5 @@
-import {
-  useController,
-  type FieldValues,
-  type UseControllerProps,
-} from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface TextInputProps<T extends FieldValues> extends UseControllerProps<T> {
   type: "text" | "email" | "tel" | "password" | "url" | "date";

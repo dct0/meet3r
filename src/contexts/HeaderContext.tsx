@@ -1,4 +1,5 @@
-import { createContext, useState, type PropsWithChildren } from "react";
+import { createContext, useState } from "react";
+import type { PropsWithChildren } from "react";
 
 export const HeaderContext = createContext([
   "",

@@ -1,5 +1,5 @@
-import { type DPPropGetter } from "@rehookify/datepicker";
-import { type PropsWithChildren } from "react";
+import type { DPPropGetter } from "@rehookify/datepicker";
+import type { PropsWithChildren } from "react";
 
 type MonthSwitchButtonProps = DPPropGetter;
 
