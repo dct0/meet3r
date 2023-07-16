@@ -15,6 +15,7 @@ const TextInput = <T extends FieldValues>({
   ...props
 }: TextInputProps<T>) => {
   const { field, fieldState } = useController(props);
+
   return (
     <article className="form-control w-full">
       {label && (
@@ -31,7 +32,9 @@ const TextInput = <T extends FieldValues>({
         aria-errormessage={`${props.name}-error`}
       />
       {fieldState.error && (
-        <div id={`${props.name}-error`}>{fieldState.error?.message}</div>
+        <span id={`${props.name}-error`} role="alert">
+          {fieldState.error?.message}
+        </span>
       )}
     </article>
   );
