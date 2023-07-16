@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { BsPalette2 } from "react-icons/bs";
 import { useLocalStorage } from "usehooks-ts";
-import { HeaderContext } from "~/contexts/HeaderContext";
+import { useHeader } from "~/hooks/useHeader";
 
 export const themes = [
   "light",
@@ -40,7 +40,7 @@ export type Theme = (typeof themes)[number];
 
 const Header = () => {
   const [theme, setTheme] = useLocalStorage<Theme>("theme", "light");
-  const [header] = useContext(HeaderContext);
+  const [header] = useHeader();
 
   useEffect(() => {
     document.querySelector("html")?.setAttribute("data-theme", theme);
@@ -57,13 +57,13 @@ const Header = () => {
           <div className="flex items-stretch">
             <a className="btn-ghost rounded-btn btn">[Login]</a>
             <div className="dropdown-end dropdown">
-              <label tabIndex={0} className="btn-ghost rounded-btn btn">
+              <button tabIndex={0} className="btn-ghost rounded-btn btn">
                 <BsPalette2 />
                 Theme
-              </label>
-              <ul
+              </button>
+              <menu
                 tabIndex={0}
-                className="dropdown-content menu rounded-box z-[1] mt-4 h-80 w-52 bg-base-100 p-2 shadow"
+                className="dropdown-content menu rounded-box z-[1] mt-4 flex h-96 w-96 flex-col bg-base-100 p-2 shadow"
               >
                 {themes.map((item, i) => (
                   <li key={i}>
@@ -75,7 +75,7 @@ const Header = () => {
                     </a>
                   </li>
                 ))}
-              </ul>
+              </menu>
             </div>
           </div>
         </div>

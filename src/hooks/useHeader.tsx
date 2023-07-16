@@ -1,14 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import type { PropsWithChildren } from "react";
 
-export const HeaderContext = createContext([
+const HeaderContext = createContext([
   "",
   (_header: string) => {
     return;
   },
 ] as [string, (header: string) => void]);
 
-export const HeaderProvider = (props: PropsWithChildren) => {
+const HeaderProvider = (props: PropsWithChildren) => {
   const state = useState<string>("");
 
   return (
@@ -17,3 +17,9 @@ export const HeaderProvider = (props: PropsWithChildren) => {
     </HeaderContext.Provider>
   );
 };
+
+const useHeader = () => {
+  return useContext(HeaderContext);
+};
+
+export { HeaderProvider, useHeader };

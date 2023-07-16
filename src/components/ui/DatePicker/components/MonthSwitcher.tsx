@@ -14,7 +14,7 @@ const MonthSwitcher = ({
   calendar: { year, month },
 }: MonthSwitcherProps) => {
   return (
-    <header className="mb-2 grid grid-cols-header items-center">
+    <header className="grid grid-cols-header items-center">
       <MonthSwitchButton {...previousMonthProps}>
         <BsChevronLeft />
       </MonthSwitchButton>

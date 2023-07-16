@@ -1,7 +1,7 @@
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
-import { HeaderProvider } from "~/contexts/HeaderContext";
+import { HeaderProvider } from "~/hooks/useHeader";
 import "~/styles/globals.css";
 import { api } from "~/utils/api";
 

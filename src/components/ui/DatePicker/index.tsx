@@ -1,6 +1,6 @@
 import { useDatePicker } from "@rehookify/datepicker";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import type {
   FieldValues,
   Path,
@@ -8,21 +8,27 @@ import type {
   UseControllerProps,
 } from "react-hook-form";
 import { useController } from "react-hook-form";
-import { getDayClassName } from "./classNames";
-import DayButton from "./components/DayButton";
+import { DragSelectProvider } from "~/hooks/useDragSelect";
+import DayButtons from "./components/DaysButtons";
 import MonthSwitcher from "./components/MonthSwitcher";
 
 interface DatePickerProps<T extends FieldValues> extends UseControllerProps<T> {
   className?: string;
 }
-
 const DatePicker = <T extends FieldValues>({
   className,
   ...props
 }: DatePickerProps<T>) => {
+  const daysRef = useRef<HTMLElement>(null);
   const { field } = useController(props);
 
-  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
+  const onDatesChange = (dates: Date[]) => {
+    setSelectedDates(dates);
+    field.onChange(dates as PathValue<T, Path<T>>);
+  };
+
   const {
     data: { weekDays, calendars },
     propGetters: { dayButton, previousMonthButton, nextMonthButton },
@@ -46,38 +52,43 @@ const DatePicker = <T extends FieldValues>({
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const calendar = calendars[0]!;
 
-  useEffect(() => {
-    // field must be a Date[]
-    field.onChange(selectedDates as PathValue<T, Path<T>>);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDates]);
-
   return (
-    <section className={clsx("bg-base w-fit rounded p-4", className)}>
-      <MonthSwitcher
-        previousMonthProps={previousMonthButton()}
-        nextMonthProps={nextMonthButton()}
-        calendar={calendar}
-      />
-      <ul className="mb-2 grid h-10 grid-cols-7 items-center gap-y-2">
-        {weekDays.map((day) => (
-          <li className="text-center text-xs" key={`${calendar.month}-${day}`}>
-            {day}
-          </li>
-        ))}
-      </ul>
-      <main className="grid grid-cols-7 justify-items-center gap-y-2">
-        {calendar.days.map((dpDay) => (
-          <DayButton
-            className={getDayClassName("w-8", dpDay)}
-            key={dpDay.$date.toDateString()}
-            {...dayButton(dpDay)}
-          >
-            {dpDay.day}
-          </DayButton>
-        ))}
-      </main>
-    </section>
+    <article
+      className={clsx(
+        "bg-base field-container flex w-fit select-none flex-col gap-2 p-4 shadow",
+        className
+      )}
+      id={props.name}
+    >
+      <div>
+        <MonthSwitcher
+          previousMonthProps={previousMonthButton()}
+          nextMonthProps={nextMonthButton()}
+          calendar={calendar}
+        />
+        <ul className="grid h-10 grid-cols-7 items-center gap-y-2">
+          {weekDays.map((day) => (
+            <li
+              className="text-center text-xs"
+              key={`${calendar.month}-${day}`}
+            >
+              {day}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <DragSelectProvider
+        settings={{ draggability: false, area: daysRef.current ?? undefined }}
+      >
+        <DayButtons
+          calendar={calendar}
+          daysRef={daysRef}
+          dayButton={dayButton}
+          selectedDates={selectedDates}
+          onDatesChange={onDatesChange}
+        />
+      </DragSelectProvider>
+    </article>
   );
 };
 

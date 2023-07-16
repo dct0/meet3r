@@ -1,17 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Button from "~/components/ui/Button";
 import DatePicker from "~/components/ui/DatePicker";
 import TextField from "~/components/ui/form/TextField";
-import { HeaderContext } from "~/contexts/HeaderContext";
-import { formSchema } from "~/schema/forms/createMeet";
+import FieldLabel from "~/components/ui/form/components/FieldLabel";
+import { useHeader } from "~/hooks/useHeader";
 import type { FormValues } from "~/schema/forms/createMeet";
+import { formSchema } from "~/schema/forms/createMeet";
 import type { PageProps } from "~/types";
 
 export const Page = ({ title }: PageProps) => {
-  const [, setHeader] = useContext(HeaderContext);
+  const [, setHeader] = useHeader();
 
   useEffect(() => {
     setHeader(title);
@@ -33,7 +34,10 @@ export const Page = ({ title }: PageProps) => {
 
   return (
     <main className="container mx-auto p-2">
-      <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col items-center gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TextField
           name="name"
           control={control}
@@ -50,8 +54,13 @@ export const Page = ({ title }: PageProps) => {
           label="Description"
           placeholder="Enter description"
         />
-        <DatePicker name="dates" control={control} />
-        <Button className="btn-primary mt-2" type="submit">
+        <div className="w-full">
+          <FieldLabel htmlFor="dates" required>
+            Dates
+          </FieldLabel>
+          <DatePicker className="w-full" name="dates" control={control} />
+        </div>
+        <Button className="btn-primary mt-2 w-full" type="submit">
           Submit
         </Button>
       </form>
