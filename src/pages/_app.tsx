@@ -1,3 +1,5 @@
+import { Provider, createStore } from "jotai";
+import { DevTools } from "jotai-devtools";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
@@ -11,17 +13,22 @@ const HeaderWithNoSSR = dynamic(() => import("../components/ui/Header"), {
   ssr: false,
 });
 
+const customStore = createStore();
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <HeaderProvider>
-        <HeaderWithNoSSR />
-        <Component {...pageProps} />
-      </HeaderProvider>
-    </SessionProvider>
+    <Provider store={customStore}>
+      <DevTools store={customStore} />
+      <SessionProvider session={session}>
+        <HeaderProvider>
+          <HeaderWithNoSSR />
+          <Component {...pageProps} />
+        </HeaderProvider>
+      </SessionProvider>
+    </Provider>
   );
 };
 

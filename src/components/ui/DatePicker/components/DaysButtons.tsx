@@ -49,7 +49,7 @@ const DayButtons = ({
         return acc;
       }, selectedDates);
 
-      onDatesChange(newState);
+      onDatesChange(newState.sort((a, b) => a.getTime() - b.getTime()));
     });
 
     return () => {

@@ -3,16 +3,16 @@
 
 generator client {
     provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+    // If you want to use Prisma Migrate, you will need to manually create a shadow database
+    // https://neon.tech/docs/guides/prisma-migrate#configure-a-shadow-database-for-prisma-migrate
+    // make sure to append ?connect_timeout=10 to the connection string
+    // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
 }
 
 model Example {
@@ -28,12 +28,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String?
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,13 +49,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id             String         @id @default(cuid())
+    name           String?
+    email          String?        @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    createdMeets   Meet[]
+    availabilities Availability[]
 }
 
 model VerificationToken {
@@ -64,4 +66,31 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Meet {
+    id             String         @id @default(cuid())
+    createdById    String
+    name           String
+    location       String?
+    description    String?
+    allowedDates   DateTime[]
+    availabilities Availability[]
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @updatedAt
+
+    createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+}
+
+model Availability {
+    id        String   @id @default(cuid())
+    userId    String
+    meetId    String
+    date      DateTime
+    times     String[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    meet Meet @relation(fields: [meetId], references: [id], onDelete: Cascade)
 }
