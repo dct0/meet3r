@@ -1,6 +1,7 @@
 import { useController } from "react-hook-form";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 import FieldLabel from "./components/FieldLabel";
+import FieldError from "./components/FieldError";
 
 interface TextInputProps<T extends FieldValues> extends UseControllerProps<T> {
   type: "text" | "email" | "tel" | "password" | "url" | "date";
@@ -32,9 +33,7 @@ const TextInput = <T extends FieldValues>({
         aria-errormessage={`${props.name}-error`}
       />
       {fieldState.error && (
-        <span id={`${props.name}-error`} role="alert">
-          {fieldState.error?.message}
-        </span>
+        <FieldError name={props.name}>{fieldState.error.message}</FieldError>
       )}
     </article>
   );

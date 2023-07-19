@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -8,13 +9,14 @@ import DatePicker from "~/components/ui/DatePicker";
 import TextField from "~/components/ui/form/TextField";
 import FieldLabel from "~/components/ui/form/components/FieldLabel";
 import { useHeader } from "~/hooks/useHeader";
-import type { CreateMeetFormValues } from "~/schemas/forms/CreateMeet";
-import { CreateMeetSchema } from "~/schemas/forms/CreateMeet";
+import type { CreateMeet } from "~/schemas/CreateMeet";
+import { CreateMeetSchema } from "~/schemas/CreateMeet";
 import type { PageProps } from "~/types";
 import { api } from "~/utils/api";
 import { requireAuth } from "~/utils/requireAuth";
 
 const Page = ({ title }: PageProps) => {
+  const router = useRouter();
   const [, setHeader] = useHeader();
   const createMeet = api.meet.create.useMutation();
 
@@ -22,7 +24,7 @@ const Page = ({ title }: PageProps) => {
     setHeader(title);
   }, [title, setHeader]);
 
-  const { control, handleSubmit } = useForm<CreateMeetFormValues>({
+  const { control, handleSubmit } = useForm<CreateMeet>({
     resolver: zodResolver(CreateMeetSchema),
     defaultValues: {
       name: "",
@@ -32,9 +34,10 @@ const Page = ({ title }: PageProps) => {
     },
   });
 
-  const onSubmit: SubmitHandler<CreateMeetFormValues> = (data) => {
-    createMeet.mutate(data);
+  const onSubmit: SubmitHandler<CreateMeet> = async (data) => {
     console.log(data);
+    const meet = await createMeet.mutateAsync(data);
+    await router.push(`/meet/${meet.id}`);
   };
 
   return (

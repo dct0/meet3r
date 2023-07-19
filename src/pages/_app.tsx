@@ -21,7 +21,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <Provider store={customStore}>
-      <DevTools store={customStore} />
       <SessionProvider session={session}>
         <HeaderProvider>
           <HeaderWithNoSSR />

@@ -13,7 +13,7 @@ export const CreateMeetSchema = z.object({
     .string()
     .max(500, "Description must not exceed 500 characters")
     .optional(),
-  dates: z.date().array(),
+  dates: z.date().array().min(1, "Please select at least one date"),
 });
 
-export type CreateMeetFormValues = z.infer<typeof CreateMeetSchema>;
+export type CreateMeet = z.infer<typeof CreateMeetSchema>;

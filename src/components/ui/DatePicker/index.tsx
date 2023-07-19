@@ -11,6 +11,8 @@ import { useController } from "react-hook-form";
 import { DragSelectProvider } from "~/hooks/useDragSelect";
 import DayButtons from "./components/DaysButtons";
 import MonthSwitcher from "./components/MonthSwitcher";
+import FieldError from "../form/components/FieldError";
+import { useRouter } from "next/router";
 
 interface DatePickerProps<T extends FieldValues> extends UseControllerProps<T> {
   className?: string;
@@ -20,7 +22,7 @@ const DatePicker = <T extends FieldValues>({
   ...props
 }: DatePickerProps<T>) => {
   const daysRef = useRef<HTMLElement>(null);
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
@@ -53,42 +55,47 @@ const DatePicker = <T extends FieldValues>({
   const calendar = calendars[0]!;
 
   return (
-    <article
-      className={clsx(
-        "bg-base field-container flex w-fit select-none flex-col gap-2 p-4 shadow",
-        className
-      )}
-      id={props.name}
-    >
-      <div>
-        <MonthSwitcher
-          previousMonthProps={previousMonthButton()}
-          nextMonthProps={nextMonthButton()}
-          calendar={calendar}
-        />
-        <ul className="grid h-10 grid-cols-7 items-center gap-y-2">
-          {weekDays.map((day) => (
-            <li
-              className="text-center text-xs"
-              key={`${calendar.month}-${day}`}
-            >
-              {day}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <DragSelectProvider
-        settings={{ draggability: false, area: daysRef.current ?? undefined }}
+    <>
+      <article
+        className={clsx(
+          "bg-base field-container flex w-fit select-none flex-col gap-2 p-4 shadow",
+          className
+        )}
+        id={props.name}
       >
-        <DayButtons
-          calendar={calendar}
-          daysRef={daysRef}
-          dayButton={dayButton}
-          selectedDates={selectedDates}
-          onDatesChange={onDatesChange}
-        />
-      </DragSelectProvider>
-    </article>
+        <div>
+          <MonthSwitcher
+            previousMonthProps={previousMonthButton()}
+            nextMonthProps={nextMonthButton()}
+            calendar={calendar}
+          />
+          <ul className="grid h-10 grid-cols-7 items-center gap-y-2">
+            {weekDays.map((day) => (
+              <li
+                className="text-center text-xs"
+                key={`${calendar.month}-${day}`}
+              >
+                {day}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <DragSelectProvider
+          settings={{ draggability: false, area: daysRef.current ?? undefined }}
+        >
+          <DayButtons
+            calendar={calendar}
+            daysRef={daysRef}
+            dayButton={dayButton}
+            selectedDates={selectedDates}
+            onDatesChange={onDatesChange}
+          />
+        </DragSelectProvider>
+      </article>
+      {fieldState.error && (
+        <FieldError name={props.name}>{fieldState.error.message}</FieldError>
+      )}
+    </>
   );
 };
 

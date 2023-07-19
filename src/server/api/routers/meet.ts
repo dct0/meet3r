@@ -1,11 +1,12 @@
-import { CreateMeetSchema } from "~/schemas/forms/CreateMeet";
+import { CreateMeetSchema } from "~/schemas/CreateMeet";
+import { GetMeetSchema } from "~/schemas/GetMeet";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const meetRouter = createTRPCRouter({
   create: protectedProcedure
     .input(CreateMeetSchema)
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.meet.create({
+    .mutation(async ({ input, ctx }) => {
+      return await ctx.prisma.meet.create({
         data: {
           name: input.name,
           location: input.location,
@@ -19,4 +20,11 @@ export const meetRouter = createTRPCRouter({
         },
       });
     }),
+  get: protectedProcedure.input(GetMeetSchema).query(async ({ input, ctx }) => {
+    return await ctx.prisma.meet.findUnique({
+      where: {
+        id: input.id,
+      },
+    });
+  }),
 });

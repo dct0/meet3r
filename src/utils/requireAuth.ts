@@ -11,7 +11,9 @@ export const requireAuth = async (
   context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>,
   callback: (
     session: Session
-  ) => GetServerSidePropsResult<{ [key: string]: unknown }>
+  ) =>
+    | GetServerSidePropsResult<{ [key: string]: unknown }>
+    | Promise<GetServerSidePropsResult<{ [key: string]: unknown }>>
 ) => {
   const session = await getSession(context);
 
