@@ -1,5 +1,5 @@
-import { CreateMeetSchema } from "~/schemas/CreateMeet";
-import { GetMeetSchema } from "~/schemas/GetMeet";
+import { CreateMeetSchema } from "~/schemas/meet/CreateMeet";
+import { GetMeetSchema } from "~/schemas/meet/GetMeet";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const meetRouter = createTRPCRouter({

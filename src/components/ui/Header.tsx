@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { signOut, signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { BsPalette2 } from "react-icons/bs";
 import { useLocalStorage } from "usehooks-ts";
@@ -39,6 +40,7 @@ export const themes = [
 export type Theme = (typeof themes)[number];
 
 const Header = () => {
+  const { data: sessionData } = useSession();
   const [theme, setTheme] = useLocalStorage<Theme>("theme", "light");
   const [header] = useHeader();
 
@@ -55,7 +57,12 @@ const Header = () => {
         <h1 className="text-xl font-extrabold">{header}</h1>
         <div className="flex flex-1 justify-end px-2">
           <div className="flex items-stretch">
-            <a className="btn-ghost rounded-btn btn">[Login]</a>
+            <button
+              className="btn-ghost rounded-btn btn"
+              onClick={sessionData ? () => void signOut() : () => void signIn()}
+            >
+              {sessionData ? "Sign out" : "Sign in"}
+            </button>
             <div className="dropdown-end dropdown">
               <button tabIndex={0} className="btn-ghost rounded-btn btn">
                 <BsPalette2 />

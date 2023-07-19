@@ -33,7 +33,6 @@ const DayButtons = ({
 
   useEffect(() => {
     const id = ds?.subscribe("callback", (e: DSCallback) => {
-      console.log(e);
       const newState = e.items.reduce((acc, item) => {
         const date = new Date(item.dataset.date as string);
 
