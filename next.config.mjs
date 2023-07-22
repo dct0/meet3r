@@ -10,6 +10,17 @@ const config = {
 
   transpilePackages: ["jotai-devtools"],
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+        port: "",
+        pathname: "/avatars/**/*.png",
+      },
+    ],
+  },
+
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
    * out.

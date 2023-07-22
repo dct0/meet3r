@@ -1,7 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { Availability, Meet } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { DefaultSession, DefaultUser, NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { env } from "~/env.mjs";
@@ -17,15 +16,17 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      createdAt: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends DefaultUser {
+    createdAt: string;
+    // ...other properties
+    // role: UserRole;
+  }
 }
 
 /**
@@ -40,6 +41,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        createdAt: new Date(user.createdAt), // it will not convert to a date no matter how hard i try
       },
     }),
   },

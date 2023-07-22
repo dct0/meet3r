@@ -9,10 +9,9 @@ import type {
 } from "react-hook-form";
 import { useController } from "react-hook-form";
 import { DragSelectProvider } from "~/hooks/useDragSelect";
+import FieldError from "../form/components/FieldError";
 import DayButtons from "./components/DaysButtons";
 import MonthSwitcher from "./components/MonthSwitcher";
-import FieldError from "../form/components/FieldError";
-import { useRouter } from "next/router";
 
 interface DatePickerProps<T extends FieldValues> extends UseControllerProps<T> {
   className?: string;

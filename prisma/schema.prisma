@@ -1,96 +1,88 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
-    // If you want to use Prisma Migrate, you will need to manually create a shadow database
-    // https://neon.tech/docs/guides/prisma-migrate#configure-a-shadow-database-for-prisma-migrate
-    // make sure to append ?connect_timeout=10 to the connection string
-    // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String?
-    access_token      String?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id             String         @id @default(cuid())
-    name           String?
-    email          String?        @unique
-    emailVerified  DateTime?
-    image          String?
-    accounts       Account[]
-    sessions       Session[]
-    createdMeets   Meet[]
-    availabilities Availability[]
+  id             String         @id @default(cuid())
+  name           String?
+  email          String?        @unique
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  accounts       Account[]
+  availabilities Availability[]
+  createdMeets   Meet[]
+  sessions       Session[]
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }
 
 model Meet {
-    id             String         @id @default(cuid())
-    createdById    String
-    name           String
-    location       String?
-    description    String?
-    allowedDates   DateTime[]
-    availabilities Availability[]
-    createdAt      DateTime       @default(now())
-    updatedAt      DateTime       @updatedAt
-
-    createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  id             String         @id @default(cuid())
+  createdById    String
+  name           String
+  location       String?
+  description    String?
+  allowedDates   DateTime[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  availabilities Availability[]
+  createdBy      User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
 }
 
 model Availability {
-    id        String   @id @default(cuid())
-    userId    String
-    meetId    String
-    date      DateTime
-    times     String[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    meet Meet @relation(fields: [meetId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  userId    String
+  meetId    String
+  date      DateTime
+  times     String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  meet      Meet     @relation(fields: [meetId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

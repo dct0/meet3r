@@ -1,5 +1,6 @@
 import { CreateMeetSchema } from "~/schemas/meet/CreateMeet";
 import { GetMeetSchema } from "~/schemas/meet/GetMeet";
+import { ListMeetsSchema } from "~/schemas/meet/ListMeets";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const meetRouter = createTRPCRouter({
@@ -27,4 +28,13 @@ export const meetRouter = createTRPCRouter({
       },
     });
   }),
+  list: protectedProcedure
+    .input(ListMeetsSchema)
+    .query(async ({ input, ctx }) => {
+      return await ctx.prisma.meet.findMany({
+        where: { createdBy: { id: ctx.session.user.id } },
+        take: input.limit,
+        skip: (input.page - 1) * input.limit,
+      });
+    }),
 });
