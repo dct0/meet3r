@@ -68,7 +68,7 @@ const Page = ({ title }: PageProps) => {
         <title>Profile</title>
       </Head>
       <main className="container mx-auto flex flex-col p-2">
-        <header className="flex items-center gap-4 overflow-hidden pt-2">
+        <header className="mt-4 flex items-center gap-4 overflow-hidden">
           <Image
             className="mask mask-squircle"
             src={avatarUrl}
@@ -91,20 +91,17 @@ const Page = ({ title }: PageProps) => {
             <p>{`Joined ${new Date(user.createdAt).toLocaleDateString()}`}</p>
           </div>
         </header>
-        <div className="divider" />
-        <section className="field-container p-4">
-          <header className="mb-4 flex justify-end">
-            <input className="input-bordered input" placeholder="Search" />
-          </header>
+        <div className="divider" role="separator" />
+        <section className="field-container p-4" role="feed">
           <ul>
             {mockMeets?.map((meet) => (
-              <div key={meet.id}>
-                <li>{meet.name}</li>
+              <article key={meet.id}>
+                <h3>{meet.name}</h3>
                 <li>{meet.description}</li>
                 <li>{meet.location}</li>
                 <li>{meet.createdById}</li>
-                <div className="divider" />
-              </div>
+                <div className="divider" role="separator" />
+              </article>
             ))}
           </ul>
         </section>

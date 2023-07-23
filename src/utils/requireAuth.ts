@@ -20,7 +20,7 @@ export const requireAuth = async (
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/401",
         permanent: false,
       },
     };

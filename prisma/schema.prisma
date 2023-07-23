@@ -75,14 +75,16 @@ model Meet {
   createdBy      User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
 }
 
+// Each user has a single availability for a given meet
+// Each meet has multiple availabilities
+// Each availability has multiple dateTimes (based off of the allowedDates of the meet)
 model Availability {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   userId    String
   meetId    String
-  date      DateTime
-  times     String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  meet      Meet     @relation(fields: [meetId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dateTimes DateTime[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  meet      Meet       @relation(fields: [meetId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

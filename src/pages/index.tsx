@@ -1,9 +1,17 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useHeader } from "~/hooks/useHeader";
 
-export default function Home() {
+export default function Page({ title = "" }) {
   const { data: sessionData } = useSession();
+  const [, setHeader] = useHeader();
+
+  useEffect(() => {
+    setHeader(title);
+  }, [title, setHeader]);
+
   return (
     <>
       <Head>

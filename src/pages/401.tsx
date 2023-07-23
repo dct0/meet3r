@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useHeader } from "~/hooks/useHeader";
 import type { PageProps } from "~/types";
 
-const Page = ({ title = "404 - Not found" }: PageProps) => {
+const Page = ({ title = "401 - Unauthorized" }: PageProps) => {
   const [, setHeader] = useHeader();
 
   useEffect(() => {
@@ -13,11 +13,11 @@ const Page = ({ title = "404 - Not found" }: PageProps) => {
   return (
     <>
       <Head>
-        <title>404 - Not found</title>
+        <title>401 - Unauthorized</title>
       </Head>
       <main className="container mx-auto p-2">
-        <h1>404</h1>
-        <p>Page not found</p>
+        <h1>401</h1>
+        <p>You do not have access to view this page.</p>
       </main>
     </>
   );
