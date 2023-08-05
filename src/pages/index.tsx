@@ -3,8 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useHeader } from "~/hooks/useHeader";
+import type { PageProps } from "~/types";
 
-export default function Page({ title = "" }) {
+export default function Page({ title = "" }: PageProps) {
   const { data: sessionData } = useSession();
   const [, setHeader] = useHeader();
 

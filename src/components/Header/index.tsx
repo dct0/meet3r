@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useHeader } from "~/hooks/useHeader";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useHeader } from "~/hooks/useHeader";
 
 const ThemeDropdownWithNoSSR = dynamic(() => import("./ThemeDropdown"), {
   ssr: false,
@@ -13,17 +13,17 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-10">
-      <nav className="navbar rounded-box flex justify-evenly bg-base-300">
-        <div className="flex-1">
-          <Link
-            className="btn-ghost rounded-btn btn text-lg font-bold"
-            href="/"
-          >
-            meet3r
+      <nav className="navbar rounded-box flex justify-between bg-base-300">
+        <div className="btn-ghost rounded-btn btn">
+          <Link className="text-lg font-bold" href="/">
+            <h2>
+              <span className="hidden sm:inline">meet3r</span>{" "}
+              <span>&#128034;</span>
+            </h2>
           </Link>
         </div>
-        <h1 className="text-xl font-extrabold">{header}</h1>
-        <div className="flex flex-1 justify-end">
+        <h1 className="text-md font-extrabold sm:text-xl">{header}</h1>
+        <div className="flex justify-end">
           <ThemeDropdownWithNoSSR />
           <div className="flex items-stretch">
             <button

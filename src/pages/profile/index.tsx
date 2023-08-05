@@ -3,47 +3,13 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import MeetItem from "~/components/profile/MeetItem";
 import { useHeader } from "~/hooks/useHeader";
 import type { PageProps } from "~/types";
 import { api } from "~/utils/api";
 import { requireAuth } from "~/utils/requireAuth";
 
 const fallbackAvatarUrl = "/assets/default-avatar.png";
-
-const mockMeets = [
-  {
-    id: "1",
-    name: "Meet 1",
-    description: "Meet 1 description",
-    location: "Meet 1 location",
-    allowedDates: [new Date()],
-    createdById: "1",
-  },
-  {
-    id: "2",
-    name: "Meet 2",
-    description: "Meet 2 description",
-    location: "Meet 2 location",
-    allowedDates: [new Date()],
-    createdById: "1",
-  },
-  {
-    id: "3",
-    name: "Meet 3",
-    description: "Meet 3 description",
-    location: "Meet 3 location",
-    allowedDates: [new Date()],
-    createdById: "1",
-  },
-  {
-    id: "4",
-    name: "Meet 4",
-    description: "Meet 4 description",
-    location: "Meet 4 location",
-    allowedDates: [new Date()],
-    createdById: "1",
-  },
-];
 
 const Page = ({ title }: PageProps) => {
   const [, setHeader] = useHeader();
@@ -67,20 +33,18 @@ const Page = ({ title }: PageProps) => {
       <Head>
         <title>Profile</title>
       </Head>
-      <main className="container mx-auto flex flex-col p-2">
-        <header className="mt-4 flex items-center gap-4 overflow-hidden">
+      <main className="container mx-auto flex flex-col">
+        <header className="mx-2 my-4 flex items-center gap-4 overflow-hidden">
           <Image
             className="mask mask-squircle"
             src={avatarUrl}
-            width={128}
-            height={128}
+            width={96}
+            height={96}
             priority
             alt="Your profile picture"
-            onLoadingComplete={(result) => {
-              if (result.naturalHeight === 0) {
-                setAvatarUrl(fallbackAvatarUrl);
-              }
-            }}
+            onLoadingComplete={(result) =>
+              result.naturalHeight === 0 && setAvatarUrl(fallbackAvatarUrl)
+            }
             onError={() => setAvatarUrl(fallbackAvatarUrl)}
           />
           <div>
@@ -91,18 +55,16 @@ const Page = ({ title }: PageProps) => {
             <p>{`Joined ${new Date(user.createdAt).toLocaleDateString()}`}</p>
           </div>
         </header>
-        <div className="divider" role="separator" />
-        <section className="field-container p-4" role="feed">
+        <div className="divider my-0 h-auto" role="separator" />
+        <section role="feed">
           <ul>
-            {mockMeets?.map((meet) => (
-              <article key={meet.id}>
-                <h3>{meet.name}</h3>
-                <li>{meet.description}</li>
-                <li>{meet.location}</li>
-                <li>{meet.createdById}</li>
-                <div className="divider" role="separator" />
-              </article>
+            {meetsData?.map((meet) => (
+              <>
+                <MeetItem key={meet.id} {...meet} />
+                <div className="divider my-0 h-auto" role="separator" />
+              </>
             ))}
+            <li className="text-center">Show more</li>
           </ul>
         </section>
       </main>
