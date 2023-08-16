@@ -57,7 +57,7 @@ const DatePicker = <T extends FieldValues>({
     <>
       <article
         className={clsx(
-          "bg-base field-container flex w-fit select-none flex-col gap-2 p-4 shadow",
+          "field-container flex w-fit select-none flex-col gap-2 bg-base-100 p-4 shadow",
           className
         )}
         id={props.name}

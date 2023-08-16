@@ -39,7 +39,7 @@ const MeetItem = ({
 
           <div className="flex flex-col items-end">
             <a className="flex items-center gap-1" onClick={openModal}>
-              <span className="link-hover link-secondary link">
+              <span className="link-hover link">
                 {allowedDates.at(0)?.toLocaleDateString()}
               </span>
               <span className="badge badge-accent badge-xs h-4 cursor-pointer font-semibold hover:bg-accent-focus">{`+${

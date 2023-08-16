@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import Button from "~/components/Button";
+import Button from "~/components/ui/Button";
 import DatePicker from "~/components/DatePicker";
 import TextField from "~/components/form/TextField";
 import FieldLabel from "~/components/form/components/FieldLabel";

@@ -1,8 +1,10 @@
 import type { Meet } from "@prisma/client";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import type { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 import superjson from "superjson";
+import Badge from "~/components/ui/Badge";
 import { useHeader } from "~/hooks/useHeader";
 import { appRouter } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
@@ -23,15 +25,30 @@ const Page = ({ id }: MeetPageProps) => {
   }, [setHeader, meet?.name]);
 
   return (
-    <main className="container mx-auto p-2">
-      <h1 className="text-2xl font-bold">{meet?.name}</h1>
-      <p className="text-lg">{meet?.description}</p>
-      <p className="text-md">{meet?.location}</p>
-      <p className="text-md">
-        {meet?.allowedDates.map((d) => d.toLocaleString())}
-      </p>
-      <p className="text-md">{meet?.createdById}</p>
-    </main>
+    <>
+      <Head>
+        <title>{meet && `${meet.name} - Meet3r`}</title>
+      </Head>
+      <main className="container mx-auto p-2">
+        <article className="flex bg-base-100 shadow">
+          <aside className="field-container-aside-l basis-1/4 bg-base-200 p-4">
+            <p className="text-lg">{meet?.description}</p>
+            <p className="text-md">{meet?.location}</p>
+            <ul className="flex flex-wrap gap-1">
+              {meet?.allowedDates.map((d) => (
+                <li key={d.getTime()}>
+                  <Badge className="badge-secondary">
+                    {d.toLocaleString()}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+            <p className="text-md">{meet?.createdById}</p>
+          </aside>
+          <div className="field-container-aside-r flex-1 p-4">Timetable</div>
+        </article>
+      </main>
+    </>
   );
 };
 

@@ -34,7 +34,7 @@ export const meetRouter = createTRPCRouter({
   list: protectedProcedure
     .input(ListMeetsSchema)
     .query(async ({ input, ctx }) => {
-      return await listMeetsWithProfile(ctx.prisma, ctx.session, input);
+      return listMeetsWithProfile(ctx.prisma, ctx.session, input);
     }),
 });
 
@@ -43,7 +43,7 @@ export const listMeetsWithProfile = async (
   session: Session,
   input: ListMeets
 ) => {
-  return await prisma.meet.findMany({
+  return prisma.meet.findMany({
     where: { createdBy: { id: session.user.id } },
     include: {
       createdBy: {

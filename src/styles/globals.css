@@ -3,10 +3,25 @@
 @tailwind utilities;
 
 @layer base {
-  .field-container {
+  .field-container-base {
     @apply border-base-content;
-    @apply border;
     @apply border-opacity-20;
     @apply rounded-btn;
+  }
+  .field-container {
+    @apply field-container-base;
+    @apply border;
+  }
+  .field-container-aside-l {
+    @apply field-container-base;
+    @apply border-l;
+    @apply border-y;
+    @apply rounded-r-none;
+  }
+  .field-container-aside-r {
+    @apply field-container-base;
+    @apply border-r;
+    @apply border-y;
+    @apply rounded-l-none;
   }
 }

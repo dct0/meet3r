@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import type {
   HTMLAttributes,
   MouseEventHandler,
@@ -12,17 +13,11 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 const Button = ({
   type = "button",
-  onClick,
   children,
   ...props
 }: PropsWithChildren<ButtonProps>) => {
   return (
-    <button
-      {...props}
-      className={`btn ${props.className ?? ""}`}
-      type={type}
-      onClick={onClick}
-    >
+    <button {...props} className={clsx("btn", props.className)} type={type}>
       {children}
     </button>
   );
