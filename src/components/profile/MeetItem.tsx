@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { MeetsWithProfile } from "~/schemas/meet/ListMeets";
+import UserChip from "../ui/UserChip";
 
 const MeetItem = ({
   id,
@@ -18,20 +18,7 @@ const MeetItem = ({
     <li>
       <article className="sm:field-container p-4 sm:my-2">
         <header className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <div className="avatar w-8">
-              <Image
-                className="mask mask-squircle"
-                src={createdBy.image ?? ""}
-                width={16}
-                height={16}
-                alt=""
-              />
-            </div>
-            <Link href={`/profile/${createdBy.id}`}>{`@${
-              createdBy.name ?? "???"
-            }`}</Link>
-          </div>
+          <UserChip {...createdBy} />
 
           <h3 className="link-hover link-primary link text-xl font-semibold">
             <Link href={`/meet/${id}`}>{name}</Link>

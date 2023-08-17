@@ -29,6 +29,15 @@ export const meetRouter = createTRPCRouter({
       where: {
         id: input.id,
       },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
     });
   }),
   list: protectedProcedure

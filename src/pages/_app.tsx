@@ -2,6 +2,7 @@ import { Provider, createStore } from "jotai";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
+import { ErrorBoundary } from "react-error-boundary";
 import Header from "~/components/Header";
 import { HeaderProvider } from "~/hooks/useHeader";
 import "~/styles/globals.css";
@@ -19,7 +20,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <HeaderProvider>
           <div className="flex min-h-screen flex-col">
             <Header />
-            <Component {...pageProps} />
+            <ErrorBoundary fallbackRender={() => <p>Fail</p>}>
+              <Component {...pageProps} />
+            </ErrorBoundary>
           </div>
         </HeaderProvider>
       </SessionProvider>

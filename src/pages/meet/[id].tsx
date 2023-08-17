@@ -3,6 +3,7 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
+import { BsCalendarEvent, BsPeople, BsPinMap } from "react-icons/bs";
 import superjson from "superjson";
 import Badge from "~/components/ui/Badge";
 import { useHeader } from "~/hooks/useHeader";
@@ -25,30 +26,40 @@ const Page = ({ id }: MeetPageProps) => {
   }, [setHeader, meet?.name]);
 
   return (
-    <>
-      <Head>
-        <title>{meet && `${meet.name} - Meet3r`}</title>
-      </Head>
-      <main className="container mx-auto p-2">
-        <article className="flex bg-base-100 shadow">
-          <aside className="field-container-aside-l basis-1/4 bg-base-200 p-4">
-            <p className="text-lg">{meet?.description}</p>
-            <p className="text-md">{meet?.location}</p>
-            <ul className="flex flex-wrap gap-1">
-              {meet?.allowedDates.map((d) => (
-                <li key={d.getTime()}>
-                  <Badge className="badge-secondary">
-                    {d.toLocaleString()}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
-            <p className="text-md">{meet?.createdById}</p>
-          </aside>
-          <div className="field-container-aside-r flex-1 p-4">Timetable</div>
-        </article>
-      </main>
-    </>
+    meet && (
+      <>
+        <Head>
+          <title>{meet && `${meet.name} - Meet3r`}</title>
+        </Head>
+        <main className="container mx-auto p-2">
+          <article className="flex bg-base-100 shadow">
+            <aside className="field-container-aside-l flex basis-1/4 flex-col gap-1 bg-base-200 p-4">
+              <header className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold text-primary">
+                  {meet.name}
+                </h1>
+                <Badge className="badge-accent flex gap-1">
+                  <span>{meet.allowedDates.length}</span>
+                  <BsCalendarEvent />
+                </Badge>
+              </header>
+              <p className="text-lg font-medium">{meet.description}</p>
+              <div className="flex items-center gap-1">
+                <BsPinMap />
+                <span className="text-md">{meet.location}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <BsPeople />
+                <span className="text-md">{`@${
+                  meet.createdBy.name ?? "???"
+                }`}</span>
+              </div>
+            </aside>
+            <div className="field-container-aside-r flex-1 p-4">Timetable</div>
+          </article>
+        </main>
+      </>
+    )
   );
 };
 
