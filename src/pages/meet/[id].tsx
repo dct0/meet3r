@@ -1,10 +1,12 @@
 import type { Meet } from "@prisma/client";
+import { DatePickerStateProvider } from "@rehookify/datepicker";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BsCalendarEvent, BsPeople, BsPinMap } from "react-icons/bs";
 import superjson from "superjson";
+import Time from "~/components/Timetable/Time";
 import Badge from "~/components/ui/Badge";
 import { useHeader } from "~/hooks/useHeader";
 import { appRouter } from "~/server/api/root";
@@ -20,6 +22,7 @@ interface MeetPageProps extends PageProps {
 const Page = ({ id }: MeetPageProps) => {
   const [, setHeader] = useHeader();
   const { data: meet } = api.meet.get.useQuery({ id });
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
 
   useEffect(() => {
     setHeader(meet?.name ?? "");
@@ -55,7 +58,29 @@ const Page = ({ id }: MeetPageProps) => {
                 }`}</span>
               </div>
             </aside>
-            <div className="field-container-aside-r flex-1 p-4">Timetable</div>
+            <div className="field-container-aside-r flex-1 p-4">
+              <DatePickerStateProvider
+                config={{
+                  selectedDates,
+                  onDatesChange,
+                }}
+              >
+                <table className="border-separate border-spacing-2">
+                  <thead>
+                    <tr>
+                      {meet.allowedDates.map((date) => (
+                        <th key={date.getTime()}>
+                          {date.toLocaleDateString()}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <Time />
+                  </tbody>
+                </table>
+              </DatePickerStateProvider>
+            </div>
           </article>
         </main>
       </>

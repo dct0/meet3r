@@ -37,6 +37,19 @@ export const meetRouter = createTRPCRouter({
             image: true,
           },
         },
+        availabilities: {
+          select: {
+            id: true,
+            dateTimes: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
   }),

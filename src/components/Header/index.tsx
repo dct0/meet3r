@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-10">
-      <nav className="navbar rounded-box flex justify-between bg-base-300">
+      <nav className="navbar flex justify-between rounded-none bg-base-300">
         <div className="btn-ghost rounded-btn btn">
           <Link className="text-lg font-bold" href="/">
             <h2>
